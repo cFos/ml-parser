@@ -1,7 +1,7 @@
 const { Lexer } = require('./lexer')
 
 class Parser {
-  constructor(str) {
+  constructor(str, filter = []) {
     this.lexer = new Lexer(str)
     this.AST = []
 
@@ -10,7 +10,7 @@ class Parser {
     while (!lexer.isFinished()) {
       let token = lexer.nextToken()
 
-      if (token) AST.push(token)
+      if (token && !filter.includes(token.type)) AST.push(token)
     }
 
     console.log(AST)
