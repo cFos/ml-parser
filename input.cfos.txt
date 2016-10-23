@@ -1,0 +1,16 @@
+#language 1033
+#fallback 1031
+#charset 0
+
+/ **********************************************************************
+/
+/  language
+/
+/ **********************************************************************
+
+language = "Engl\"ish";
+lang_key = "test lang key";
+input_lang = "3rd testing key"; / test
+multiline = "test #it guys"
+  "we \"should con\";tunue guys"
+  "until end has been meet";
