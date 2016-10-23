@@ -71,10 +71,9 @@ class Lexer {
     const getIsBreakingChar = (char) => breakingChars.indexOf(char) !== -1
 
     let isBreakingChar = getIsBreakingChar(this.current())
-
     let t = ''
 
-    while ((breakOnMatch && !isBreakingChar) || (!breakOnMatch && isBreakingChar) && !this.isFinished()) {
+    while (((breakOnMatch && !isBreakingChar) || (!breakOnMatch && isBreakingChar)) && !this.isFinished()) {
       t += this.current()
       this.forward()
 
