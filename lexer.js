@@ -44,8 +44,19 @@ class Lexer {
       this.forward()
       return token(TOKEN_LANGASSIGN, cur, lineno, colno)
     }
+    if (tok = this.extractUntil(WHITESPACE_CHARS + LINEEND_CHARS))  {
+      const beforeTokChar = this.previous(tok.length + 1)
+      const hasWhitespaceBefore = WHITESPACE_CHARS.indexOf(beforeTokChar) !== -1
+      const hasLineendBefore = LINEEND_CHARS.indexOf(beforeTokChar) !== -1
+      this.forward()
 
-    this.forward()
+      if (hasWhitespaceBefore) return token(TOKEN_VALUE, tok, lineno, colno)
+      if (hasLineendBefore || (hasLineendBefore && hasWhitespaceBefore)) return token(TOKEN_LANGKEY, tok, lineno, colno)
+    }
+
+    tok = this.extractUntil('')
+    console.error(`Unparsed text (${lineno}:${colno}):\n`, tok)
+    throw new Error('Uparsed text remained')
   }
 
   isFinished() { return this.index >= this.len }
