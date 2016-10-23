@@ -60,8 +60,8 @@ class Lexer {
   }
 
   current() { return (!this.isFinished()) ? this.str.charAt(this.index) : 'NULL' }
-  previous() { return this.str.charAt(this.index - 1) }
-  next() { return this.str.charAt(this.index + 1) }
+  previous(steps = 1) { return this.str.charAt(this.index - steps) }
+  next(steps = 1) { return this.str.charAt(this.index + steps) }
 
   extract(breakingChars) { return this.extractMatching(false, breakingChars) }
   extractUntil(breakingChars) { return this.extractMatching(true, breakingChars)  }
