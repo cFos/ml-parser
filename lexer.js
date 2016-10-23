@@ -8,10 +8,11 @@ const LANGKEY_ASSIGN_OPERATOR = '='
 const LANGSTRING_START = '"'
 const LANGSTRING_END = '";'
 
-const TOKEN_KEYWORD = 'keyword'
-const TOKEN_LANGKEY = 'key'
+const TOKEN_KEY = 'key'
+const TOKEN_VALUE = 'value'
+const TOKEN_LANGKEY = 'langkey'
 const TOKEN_LANGASSIGN = 'assign'
-const TOKEN_LANGSTRING = 'string'
+const TOKEN_LANGSTRING = 'langstring'
 const TOKEN_COMMENT = 'comment'
 const TOKEN_WHITESPACE = 'whitespace'
 const TOKEN_NEWLINE = 'newline'
@@ -37,7 +38,7 @@ class Lexer {
     if (cur === LANGSTRING_START) return token(TOKEN_LANGSTRING, this.parseString(cur), lineno, colno)
     if (tok = this.extract(WHITESPACE_CHARS)) return token(TOKEN_WHITESPACE, tok, lineno, colno)
     if (tok = this.extract(LINEEND_CHARS)) return token(TOKEN_NEWLINE, tok, lineno, colno)
-    if ((cur === KEYWORD_OPERATOR) && (tok = this.extractUntil(WHITESPACE_CHARS))) return token(TOKEN_KEYWORD, tok, lineno, colno)
+    if ((cur === KEYWORD_OPERATOR) && (tok = this.extractUntil(WHITESPACE_CHARS))) return token(TOKEN_KEY, tok, lineno, colno)
     if ((cur === COMMENT_OPERATOR) && (tok = this.extractUntil(LINEEND_CHARS))) return token(TOKEN_COMMENT, tok, lineno, colno)
     if (cur === LANGKEY_ASSIGN_OPERATOR) {
       this.forward()
@@ -51,6 +52,7 @@ class Lexer {
 
   forward() {
     this.index++
+
     if (this.previous() === '\n') {
       this.lineno++
       this.colno = 0
