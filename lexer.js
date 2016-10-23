@@ -104,5 +104,14 @@ class Lexer {
 }
 
 module.exports = {
-  Lexer
+  Lexer,
+
+  TOKEN_KEY,
+  TOKEN_VALUE,
+  TOKEN_LANGKEY,
+  TOKEN_LANGASSIGN,
+  TOKEN_LANGSTRING,
+  TOKEN_COMMENT,
+  TOKEN_WHITESPACE,
+  TOKEN_NEWLINE
 }
