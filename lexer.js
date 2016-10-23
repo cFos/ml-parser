@@ -97,6 +97,7 @@ class Lexer {
       this.forward()
     }
 
+    this.forward() // skip additional ending `;`
     this.forward()
     return str
   }
