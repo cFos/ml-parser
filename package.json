@@ -1,6 +1,6 @@
 {
   "name": "ml-parser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Humble attempt to write parser for cFos l10n files",
   "main": "index.js",
   "scripts": {
