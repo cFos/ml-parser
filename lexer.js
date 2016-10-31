@@ -12,9 +12,9 @@ const LANGSTRING_END_OPERATOR = ';'
 const TOKEN_KEY = 'key'
 const TOKEN_VALUE = 'value'
 const TOKEN_LANGKEY = 'langkey'
-const TOKEN_LANGASSIGN = 'assign'
-const TOKEN_LANGSTRING = 'langstring'
-const TOKEN_LANGSTRING_END = 'langkeyEnd'
+const TOKEN_LANGKEY_ASSIGN = 'langkeyAssign'
+const TOKEN_LANGKEY_STRING = 'langkeyString'
+const TOKEN_LANGKEY_END = 'langkeyEnd'
 const TOKEN_COMMENT = 'comment'
 const TOKEN_INLINE_COMMENT = 'inlineComment'
 const TOKEN_WHITESPACE = 'whitespace'
@@ -38,7 +38,7 @@ class Lexer {
     let cur = this.current()
 
     if (this.isFinished()) return null
-    if (cur === LANGSTRING_START) return token(TOKEN_LANGSTRING, this.parseString(cur), lineno, colno)
+    if (cur === LANGSTRING_START) return token(TOKEN_LANGKEY_STRING, this.parseString(cur), lineno, colno)
     if (tok = this.extract(WHITESPACE_CHARS)) return token(TOKEN_WHITESPACE, tok, lineno, colno)
     if (tok = this.extract(LINEEND_CHARS)) return token(TOKEN_NEWLINE, tok, lineno, colno)
     if ((cur === KEYWORD_OPERATOR) && (tok = this.extractUntil(WHITESPACE_CHARS))) return token(TOKEN_KEY, tok, lineno, colno)
@@ -46,11 +46,11 @@ class Lexer {
     if ((cur === COMMENT_OPERATOR) && (tok = this.extractUntil(LINEEND_CHARS))) return token(TOKEN_COMMENT, tok, lineno, colno)
     if (cur === LANGKEY_ASSIGN_OPERATOR) {
       this.forward()
-      return token(TOKEN_LANGASSIGN, cur, lineno, colno)
+      return token(TOKEN_LANGKEY_ASSIGN, cur, lineno, colno)
     }
     if (cur === LANGSTRING_END_OPERATOR) {
       this.forward()
-      return token(TOKEN_LANGSTRING_END, cur, lineno, colno)
+      return token(TOKEN_LANGKEY_END, cur, lineno, colno)
     }
     if (tok = this.extractUntil(WHITESPACE_CHARS + LINEEND_CHARS))  {
       const beforeTokChar = this.previous(tok.length + 1)
@@ -129,9 +129,11 @@ module.exports = {
   TOKEN_KEY,
   TOKEN_VALUE,
   TOKEN_LANGKEY,
-  TOKEN_LANGASSIGN,
-  TOKEN_LANGSTRING,
+  TOKEN_LANGKEY_ASSIGN,
+  TOKEN_LANGKEY_STRING,
+  TOKEN_LANGKEY_END,
   TOKEN_COMMENT,
+  TOKEN_INLINE_COMMENT,
   TOKEN_WHITESPACE,
   TOKEN_NEWLINE
 }
