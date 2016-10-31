@@ -1,7 +1,7 @@
 const WHITESPACE_CHARS = ' \t\u00A0'
 const LINEEND_CHARS = '\n\r'
 
-const KEYWORD_OPERATOR = '#'
+const PRAGMA_OPERATOR = '#'
 const COMMENT_OPERATOR = '/'
 const ESCAPE_OPERATOR = '\\'
 const LANGKEY_ASSIGN_OPERATOR = '='
@@ -9,8 +9,8 @@ const LANGSTRING_START = '"'
 const LANGSTRING_END = '"'
 const LANGSTRING_END_OPERATOR = ';'
 
-const TOKEN_KEY = 'key'
-const TOKEN_VALUE = 'value'
+const TOKEN_PRAGMA = 'pragma'
+const TOKEN_PRAGMA_VALUE = 'pragmaValue'
 const TOKEN_LANGKEY = 'langkey'
 const TOKEN_LANGKEY_ASSIGN = 'langkeyAssign'
 const TOKEN_LANGKEY_STRING = 'langkeyString'
@@ -41,7 +41,7 @@ class Lexer {
     if (cur === LANGSTRING_START) return token(TOKEN_LANGKEY_STRING, this.parseString(cur), lineno, colno)
     if (tok = this.extract(WHITESPACE_CHARS)) return token(TOKEN_WHITESPACE, tok, lineno, colno)
     if (tok = this.extract(LINEEND_CHARS)) return token(TOKEN_NEWLINE, tok, lineno, colno)
-    if ((cur === KEYWORD_OPERATOR) && (tok = this.extractUntil(WHITESPACE_CHARS))) return token(TOKEN_KEY, tok, lineno, colno)
+    if ((cur === PRAGMA_OPERATOR) && (tok = this.extractUntil(WHITESPACE_CHARS))) return token(TOKEN_PRAGMA, tok, lineno, colno)
     if ((cur === COMMENT_OPERATOR) && LINEEND_CHARS.indexOf(this.previous()) === -1 && (tok = this.extractUntil(LINEEND_CHARS))) return token(TOKEN_INLINE_COMMENT, tok, lineno, colno)
     if ((cur === COMMENT_OPERATOR) && (tok = this.extractUntil(LINEEND_CHARS))) return token(TOKEN_COMMENT, tok, lineno, colno)
     if (cur === LANGKEY_ASSIGN_OPERATOR) {
@@ -58,7 +58,7 @@ class Lexer {
       const hasLineendBefore = LINEEND_CHARS.indexOf(beforeTokChar) !== -1
       this.forward()
 
-      if (hasWhitespaceBefore) return token(TOKEN_VALUE, tok, lineno, colno)
+      if (hasWhitespaceBefore) return token(TOKEN_PRAGMA_VALUE, tok, lineno, colno)
       if (hasLineendBefore || (hasLineendBefore && hasWhitespaceBefore)) return token(TOKEN_LANGKEY, tok, lineno, colno)
     }
 
@@ -126,8 +126,8 @@ class Lexer {
 module.exports = {
   Lexer,
 
-  TOKEN_KEY,
-  TOKEN_VALUE,
+  TOKEN_PRAGMA,
+  TOKEN_PRAGMA_VALUE,
   TOKEN_LANGKEY,
   TOKEN_LANGKEY_ASSIGN,
   TOKEN_LANGKEY_STRING,
