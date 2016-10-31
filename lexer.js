@@ -6,13 +6,15 @@ const COMMENT_OPERATOR = '/'
 const ESCAPE_OPERATOR = '\\'
 const LANGKEY_ASSIGN_OPERATOR = '='
 const LANGSTRING_START = '"'
-const LANGSTRING_END = '";'
+const LANGSTRING_END = '"'
+const LANGSTRING_END_OPERATOR = ';'
 
 const TOKEN_KEY = 'key'
 const TOKEN_VALUE = 'value'
 const TOKEN_LANGKEY = 'langkey'
 const TOKEN_LANGASSIGN = 'assign'
 const TOKEN_LANGSTRING = 'langstring'
+const TOKEN_LANGSTRING_END = 'langkeyEnd'
 const TOKEN_COMMENT = 'comment'
 const TOKEN_INLINE_COMMENT = 'inlineComment'
 const TOKEN_WHITESPACE = 'whitespace'
@@ -45,6 +47,10 @@ class Lexer {
     if (cur === LANGKEY_ASSIGN_OPERATOR) {
       this.forward()
       return token(TOKEN_LANGASSIGN, cur, lineno, colno)
+    }
+    if (cur === LANGSTRING_END_OPERATOR) {
+      this.forward()
+      return token(TOKEN_LANGSTRING_END, cur, lineno, colno)
     }
     if (tok = this.extractUntil(WHITESPACE_CHARS + LINEEND_CHARS))  {
       const beforeTokChar = this.previous(tok.length + 1)
@@ -103,7 +109,7 @@ class Lexer {
 
     let str = ''
 
-    const getIsEndingChar = () => this.previous() !== ESCAPE_OPERATOR && this.current() + this.next() === LANGSTRING_END
+    const getIsEndingChar = () => this.previous() !== ESCAPE_OPERATOR && this.current() === LANGSTRING_END
 
     while (!this.isFinished() && !getIsEndingChar()) {
       let cur = this.current()
@@ -112,7 +118,6 @@ class Lexer {
       this.forward()
     }
 
-    this.forward() // skip additional ending `;`
     this.forward()
     return str
   }
