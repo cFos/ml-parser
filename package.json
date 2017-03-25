@@ -2,7 +2,7 @@
   "name": "ml-parser",
   "version": "0.2.0",
   "description": "Humble attempt to write parser for cFos l10n files",
-  "main": "index.js",
+  "main": "ml-parser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,5 +10,8 @@
     "type": "git",
     "url": "git@github.com:cFos/ml-parser.git"
   },
-  "author": "Serj Lavrin (https://github.com/ArmorDarks)"
+  "author": "Serj Lavrin (https://github.com/ArmorDarks)",
+  "dependencies": {
+    "commander": "2.9.0"
+  }
 }
